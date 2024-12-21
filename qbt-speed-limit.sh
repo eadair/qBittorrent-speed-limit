@@ -51,7 +51,7 @@ if [ $xfrNow -gt $xfrLimit ]
     echo 'No change required.  Already at alternative limit.'
   fi
 else
-  printf "Under transfer limit [%s]\n" "$(( 100 * $xfrNow / $xfrLimit ))%"
+  printf "Under transfer limit [%s]\n" "$(( 100 * ( $xfrNow - $xfrStart ) / $XFRMAX ))%"
   if [ $limitMode -eq 1 ]
   then
     curl -s -X POST "${QBTSERVER}${QBTAPIROOT}/transfer/toggleSpeedLimitsMode"
