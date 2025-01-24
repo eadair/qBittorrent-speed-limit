@@ -2,7 +2,6 @@
 
 set -e
 
-
 #The total QBT transfer bytes (rx+tx) per interval before triggering the alternative speed limit
 XFRMAX=$(( 20 * 1073741824 ))
 
@@ -17,13 +16,19 @@ QBTSERVER='http://localhost:8080'
 QBTAPIROOT='/api/v2'
 
 
-xfrStart=`cat $XFRFILE`
-printf "%-10s: %18s\n" 'xfrStart' "$xfrStart"
-
 INFO=$(curl -s -X GET "${QBTSERVER}${QBTAPIROOT}/transfer/info")
 
 xfrNow=$(echo $INFO | jq -r '[.dl_info_data,.up_info_data] | add')
 printf "%-10s: %18s\n" 'xfrNow' "$xfrNow"
+
+if [ "$1" = "--save" ]; then
+  echo 'Saving current data transfer.'
+  echo $xfrNow >$XFRFILE
+  exit 0
+fi
+
+xfrStart=`cat $XFRFILE`
+printf "%-10s: %18s\n" 'xfrStart' "$xfrStart"
 
 xfrLimit=$((xfrStart + XFRMAX))
 printf "%-10s: %18s\n" 'xfrLimit' "$xfrLimit"
@@ -32,12 +37,6 @@ printf "%-10s: %18s\n" 'xfrLimit' "$xfrLimit"
 limitMode=$(curl -s -X GET "${QBTSERVER}${QBTAPIROOT}/transfer/speedLimitsMode")
 printf "%-10s: %18s\n" 'limitMode' "$limitMode"
 
-
-if [ "$1" = "--save" ]; then
-  echo 'Saving current data transfer.'
-  echo $xfrNow >$XFRFILE
-  exit 0
-fi
 
 
 if [ $xfrNow -gt $xfrLimit ]
