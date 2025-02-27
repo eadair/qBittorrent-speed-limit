@@ -2,7 +2,7 @@
 Toggle qBittorrent alternative limit setting when total data transferred exceeds threshold.
 
 Parameters are defined in `qbt_limits.sh`
-The `-save` parameter should be used at the beginning of each data interval.  Ex: if the desired cap is 30GB per day, run `qbt-limits.sh -save` daily and use the parameter customize `-threshold_bytes 30GB`
+The `-save` parameter should be used at the beginning of each data interval.  Ex: if the desired cap is 30GB per day, run `qbt-limits.sh -save` daily and use the parameter `-threshold_bytes 30GB`
 
 ### Example scheduling with `crontab -e`
 ```
