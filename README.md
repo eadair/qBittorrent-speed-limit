@@ -12,4 +12,7 @@ The `-save` parameter should be used at the beginning of each data interval.  Ex
 
 # every 15 minutes check if data limit (15GB) has been exceeded
 */15 0,2-23 * * * $HOME/qbt_limits.sh -threshold_bytes 15GB
+
+# on Sunday at 155AM update the tracker list
+55 1 * * 0 $HOME/qbt_trackers.sh 
 ```
